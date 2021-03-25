@@ -1,0 +1,56 @@
+
+# Define Function that calculates Sharpe-Ratio
+
+def my_function(x_0,x_1,r_1,r_2,sigma_1,sigma_2,cor,threeshold):
+
+  w_1 = (x_0 + x_1) / 3 # Allocation in Asset 1
+  w_2 = 1 - w_1 # Allocation in Asset 1
+
+  r = w_1 * r_1 + w_2 * r_2 # Portfolio return
+
+  std = (w_1 ** 2 * sigma_1 ** 2 + w_2 ** 2 * sigma_2 ** 2 + 2*cor*w_1*w_2*sigma_1*sigma_2) ** 0.5 # Portfolio standart deviation
+
+  sharpe = r / std # Sharpe ratio
+
+  if sharpe > threeshold:
+      result = 1
+  else:
+      result = 0
+
+  return result
+
+
+
+
+
+
+import itertools    # 'intertools' used to create a list of binary options
+
+# Define Input Variables ____________
+
+threeshold = 0.7
+
+r_1 = 1             # return deviation asset 1
+r_2 = 2             # return deviation asset 2
+
+sigma_1 = 3         # standart deviation asset 1
+sigma_2 = 2         # standart deviation asset 2
+
+cor = 0.5           # Correlation between asset 1 and 2, lies between 0 and 1
+
+tt = [None] * 4     # Initialize truth table
+
+
+lst = list(itertools.product([0, 1], repeat=2)) # Creates list of all possible x_0/x_1 combinations
+
+# Check portfolio returns for all possible values
+
+for i in range(0, 4):
+    x_0 = lst[i][0]
+    x_1 = lst[i][1]
+    tt[i] = my_function(x_0, x_1, r_1, r_2, sigma_1, sigma_2, cor, threeshold)
+# Call Function
+
+
+print(tt) # Truth table
+
